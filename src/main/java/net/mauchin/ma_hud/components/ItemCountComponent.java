@@ -1,8 +1,8 @@
-package net.mauchin.ma_hud.compornents;
+package net.mauchin.ma_hud.components;
 
 import net.mauchin.ma_hud.MaHUD;
-import net.mauchin.ma_hud.alignments.Alignment;
-import net.mauchin.ma_hud.grids.GridLocation;
+import net.mauchin.ma_hud.screens.BooleanContextMenuComponent;
+import net.mauchin.ma_hud.screens.ContextMenuComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -12,9 +12,13 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ItemCountComponent extends AbstractHUDComponent{
     public Item item;
+    public boolean showRate = true;
     public ItemCountComponent(Item item) {
         this.item = item;
     }
@@ -55,10 +59,20 @@ public class ItemCountComponent extends AbstractHUDComponent{
         Text rate = new LiteralText(new DecimalFormat("0.00").format(this.getRate())+"/min");
         matrices.translate(0.0D, 0.0D, 200.0D);
         textRenderer.drawWithShadow(matrices, count,(float) x+getRenderWidth()/2,(float) y+9, 0xffffff);
-        textRenderer.drawWithShadow(matrices, rate,(float) x+getRenderWidth()/2,(float) y+1, 0xffffff);
+        if (showRate){
+            textRenderer.drawWithShadow(matrices, rate,(float) x+getRenderWidth()/2,(float) y+1, 0xffffff);
+        }
     }
     @Override
     public void tick() {
 
+    }
+
+    @Override
+    public List<ContextMenuComponent> getContextComponents() {
+        return new ArrayList<>(){{
+            add(new BooleanContextMenuComponent("rate display", new AtomicReference<>(showRate))
+            );
+        }};
     }
 }

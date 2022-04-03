@@ -1,6 +1,9 @@
-package net.mauchin.ma_hud.compornents;
+package net.mauchin.ma_hud.components;
 
+import net.mauchin.ma_hud.screens.ContextMenuComponent;
 import net.minecraft.client.util.math.MatrixStack;
+
+import java.util.List;
 
 public class TimerComponent extends AbstractHUDComponent{
     @Override
@@ -21,5 +24,10 @@ public class TimerComponent extends AbstractHUDComponent{
     @Override
     public void tick() {
 
+    }
+
+    @Override
+    public List<ContextMenuComponent> getContextComponents() {
+        return null;
     }
 }

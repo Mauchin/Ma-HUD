@@ -1,6 +1,6 @@
 package net.mauchin.ma_hud.grids;
 
-import net.mauchin.ma_hud.compornents.AbstractHUDComponent;
+import net.mauchin.ma_hud.components.AbstractHUDComponent;
 
 import java.util.HashMap;
 import java.util.Map;

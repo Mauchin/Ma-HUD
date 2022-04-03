@@ -28,7 +28,7 @@ public class MaHUDSettingsScreen extends Screen {
             else{gridLocation.renderBoxOutline(matrices,component.getWidth(),component.getHeight(),Color.white);
             }
         });
-        contextMenu.render(matrices);
+        contextMenu.render(matrices,mouseX,mouseY);
     }
     public void renderGrid(MatrixStack matrices){
         Window window = MinecraftClient.getInstance().getWindow();
@@ -71,6 +71,7 @@ public class MaHUDSettingsScreen extends Screen {
         });
         return gridLocationToReturn.get();
     }
+    
 
 
 }
