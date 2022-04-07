@@ -1,11 +1,16 @@
 package net.mauchin.ma_hud.components;
 
-import net.mauchin.ma_hud.screens.ContextMenuComponent;
+import net.mauchin.ma_hud.grids.GridLocation;
+import net.mauchin.ma_hud.screens.ContextAction;
 import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.List;
 
 public class TimerComponent extends AbstractHUDComponent{
+    public TimerComponent(GridLocation gridLocation) {
+        super(gridLocation);
+    }
+
     @Override
     public int getHeight() {
         return 0;
@@ -17,7 +22,7 @@ public class TimerComponent extends AbstractHUDComponent{
     }
 
     @Override
-    public void render(MatrixStack matrices, int x, int y) {
+    public void render(MatrixStack matrices) {
 
     }
 
@@ -27,7 +32,7 @@ public class TimerComponent extends AbstractHUDComponent{
     }
 
     @Override
-    public List<ContextMenuComponent> getContextComponents() {
+    public List<ContextAction> getContextComponents() {
         return null;
     }
 }

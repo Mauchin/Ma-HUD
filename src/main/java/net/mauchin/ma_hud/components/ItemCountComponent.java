@@ -1,8 +1,8 @@
 package net.mauchin.ma_hud.components;
 
 import net.mauchin.ma_hud.MaHUD;
-import net.mauchin.ma_hud.screens.BooleanContextMenuComponent;
-import net.mauchin.ma_hud.screens.ContextMenuComponent;
+import net.mauchin.ma_hud.screens.BooleanContextAction;
+import net.mauchin.ma_hud.screens.ContextAction;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -19,7 +19,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ItemCountComponent extends AbstractHUDComponent{
     public Item item;
     public boolean showRate = true;
-    public ItemCountComponent(Item item) {
+    public ItemCountComponent(int x,int y,Item item) {
+        super(x,y);
         this.item = item;
     }
 
@@ -52,15 +53,15 @@ public class ItemCountComponent extends AbstractHUDComponent{
     }
 
     @Override
-    public void render(MatrixStack matrices, int x, int y) {
-        MinecraftClient.getInstance().getItemRenderer().renderInGuiWithOverrides(item.getDefaultStack(),x,y,0,-1);
+    public void render(MatrixStack matrices) {
+        MinecraftClient.getInstance().getItemRenderer().renderInGuiWithOverrides(item.getDefaultStack(),gridLocation.getRenderX(),gridLocation.getRenderY(),0,-1);
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         Text count = new LiteralText(String.valueOf(getCount()));
         Text rate = new LiteralText(new DecimalFormat("0.00").format(this.getRate())+"/min");
         matrices.translate(0.0D, 0.0D, 200.0D);
-        textRenderer.drawWithShadow(matrices, count,(float) x+getRenderWidth()/2,(float) y+9, 0xffffff);
+        textRenderer.drawWithShadow(matrices, count,(float) gridLocation.getRenderX()+getRenderWidth()/2,(float) gridLocation.getRenderY()+9, 0xffffff);
         if (showRate){
-            textRenderer.drawWithShadow(matrices, rate,(float) x+getRenderWidth()/2,(float) y+1, 0xffffff);
+            textRenderer.drawWithShadow(matrices, rate,(float) gridLocation.getRenderX()+getRenderWidth()/2,(float) gridLocation.getRenderY()+1, 0xffffff);
         }
     }
     @Override
@@ -69,10 +70,12 @@ public class ItemCountComponent extends AbstractHUDComponent{
     }
 
     @Override
-    public List<ContextMenuComponent> getContextComponents() {
+    public List<ContextAction> getContextComponents() {
         return new ArrayList<>(){{
-            add(new BooleanContextMenuComponent("rate display", new AtomicReference<>(showRate))
+            add(new BooleanContextAction("rate display", new AtomicReference<>(showRate))
             );
+            add(new ContextAction("test1",null));
+            add(new ContextAction("test2",null));
         }};
     }
 }

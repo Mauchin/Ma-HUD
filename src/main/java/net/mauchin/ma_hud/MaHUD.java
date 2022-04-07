@@ -22,8 +22,8 @@ public class MaHUD implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		grid.addComponent(0,0,new ItemCountComponent(Items.DIAMOND));
-		grid.addComponent(0,1,new ItemCountComponent(Items.GOLD_INGOT));
+		grid.addComponent(new ItemCountComponent(0,0,Items.DIAMOND));
+		grid.addComponent(new ItemCountComponent(0,1,Items.GOLD_INGOT));
 		KeyBinding settingsKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 				"ma_hud.key.settings", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G,
 				"ma_hud.category"));
@@ -31,8 +31,8 @@ public class MaHUD implements ModInitializer {
 				"ma_hud.key.timer", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_H,
 				"ma_hud.category"));
 		HudRenderCallback.EVENT.register((matrices,d)->{
-			grid.forEach((gridLocation, component) -> {
-				component.render(matrices,gridLocation);
+			grid.forEach(component -> {
+				component.render(matrices);
 			});
 		});
 		ClientTickEvents.START_CLIENT_TICK.register(client -> {

@@ -5,7 +5,4 @@ public class RandomUtils {
         if (bool){return "Disable";}
         return "Enable";
     }
-    public static void swapBool(boolean bool){
-        bool = !bool;
-    }
 }

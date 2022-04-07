@@ -21,11 +21,11 @@ public class MaHUDSettingsScreen extends Screen {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta){
         this.renderGrid(matrices);
         GridLocation hoveredLocation = this.getHoveredGridLocation(mouseX,mouseY);
-        MaHUD.grid.forEach((gridLocation, component) -> {
-            if (gridLocation == hoveredLocation){
-                gridLocation.renderBoxOutline(matrices,component.getWidth(),component.getHeight(),Color.green);
+        MaHUD.grid.forEach(component -> {
+            if (component.gridLocation == hoveredLocation){
+                component.gridLocation.renderBoxOutline(matrices,component.getWidth(),component.getHeight(),Color.green);
             }
-            else{gridLocation.renderBoxOutline(matrices,component.getWidth(),component.getHeight(),Color.white);
+            else{component.gridLocation.renderBoxOutline(matrices,component.getWidth(),component.getHeight(),Color.white);
             }
         });
         contextMenu.render(matrices,mouseX,mouseY);
@@ -51,8 +51,14 @@ public class MaHUDSettingsScreen extends Screen {
             contextMenu.shouldRender = !contextMenu.shouldRender;
             contextMenu.x = (int)mouseX;
             contextMenu.y = (int)mouseY;
-            contextMenu.targetGridLocation = loc;
             contextMenu.targetComponent = MaHUD.grid.getComponent(loc);
+        }
+        else if (button == 0 && contextMenu.shouldRender){
+            ContextAction action = this.contextMenu.getHoveredContextAction(mouseX,mouseY);
+            if (action != null) {
+                action.run(contextMenu.targetComponent);
+            }
+            else{contextMenu.shouldRender = false;}
         }
         else if (contextMenu.shouldRender){
             contextMenu.shouldRender = false;
@@ -63,15 +69,15 @@ public class MaHUDSettingsScreen extends Screen {
     public GridLocation getHoveredGridLocation(double mouseX, double mouseY){
         //idk what this is but my IDE says it wont work otherwise so yeah
         AtomicReference<GridLocation> gridLocationToReturn = new AtomicReference<>();
-        MaHUD.grid.forEach((gridLocation, component) -> {
-            if (gridLocation.getRenderX() <= mouseX && mouseX < gridLocation.getRenderX()+component.getRenderWidth()
-            && gridLocation.getRenderY() <= mouseY && mouseY < gridLocation.getRenderY()+component.getRenderHeight()){
-            gridLocationToReturn.set(gridLocation);
+        MaHUD.grid.forEach( component -> {
+            if (component.gridLocation.getRenderX() <= mouseX && mouseX < component.gridLocation.getRenderX()+component.getRenderWidth()
+            && component.gridLocation.getRenderY() <= mouseY && mouseY < component.gridLocation.getRenderY()+component.getRenderHeight()){
+            gridLocationToReturn.set(component.gridLocation);
             }
         });
         return gridLocationToReturn.get();
     }
-    
+
 
 
 }

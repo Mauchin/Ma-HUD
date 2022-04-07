@@ -2,30 +2,43 @@ package net.mauchin.ma_hud.grids;
 
 import net.mauchin.ma_hud.components.AbstractHUDComponent;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiConsumer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class Grid {
-    Map<GridLocation, AbstractHUDComponent> componentMap;
-    public Grid(){
-        componentMap = new HashMap<>();
-    }
+    List<AbstractHUDComponent> componentList = new ArrayList<>();
 
-    public void forEach(BiConsumer<GridLocation, AbstractHUDComponent> action){
-        componentMap.forEach(action);
+
+    public void forEach(Consumer<AbstractHUDComponent> action){
+        componentList.forEach(action);
     }
 
     public AbstractHUDComponent getComponent(int x, int y){
-        return componentMap.get(new GridLocation(x,y));
-    }
-    public AbstractHUDComponent getComponent(GridLocation gridLocation){return componentMap.get(gridLocation);}
-    public boolean addComponent(int x, int y, AbstractHUDComponent component){
-        if (!componentMap.containsKey(new GridLocation(x,y))){
-            componentMap.put(new GridLocation(x,y),component);
-            return true;
+        for(AbstractHUDComponent component: componentList){
+            if(component.gridLocation.x == x &&component.gridLocation.y == y){
+                return component;
+            }
         }
-        return false;
+        return null;
+    }
+    public AbstractHUDComponent getComponent(GridLocation gridLocation){
+        for(AbstractHUDComponent component: componentList){
+            if(component.gridLocation == gridLocation){
+                return component;
+            }
+        }
+        return null;
+    }
+    public boolean addComponent(AbstractHUDComponent component){
+        for(AbstractHUDComponent component1: componentList){
+            if(component.gridLocation.x == component1.gridLocation.x && component.gridLocation.y == component1.gridLocation.y){
+                return false;
+            }
+        }
+        componentList.add(component);
+        return true;
+
     }
 }
 
